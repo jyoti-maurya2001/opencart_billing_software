@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html dir="{{ direction }}" lang="{{ lang }}">
+<head>
+<meta charset="UTF-8" />
+<title>{{ title }}</title>
+<base href="{{ base }}" />
+<link href="view/javascript/bootstrap/css/bootstrap.css" rel="stylesheet" media="all" />
+<script type="text/javascript" src="view/javascript/jquery/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="view/javascript/bootstrap/js/bootstrap.min.js"></script>
+<link href="view/javascript/font-awesome/css/font-awesome.min.css" type="text/css" rel="stylesheet" />
+<link type="text/css" href="view/stylesheet/stylesheet.css" rel="stylesheet" media="all" />
+</head>
+<body>
+
+<div class="container">
+      <div style="page-break-after: always;">
+      <div class="row">
+      {% for bill in bills %}
+      
+        <div class="col-md-4">
+         </br>
+            <div class="panel panel-default">
+              <div class="panel-heading">
+               <h3 class="panel-title"><i class="fa fa-user"></i> {{ text_bill_detail }}</h3>
+              </div>
+
+          <table class="table"> 
+            <tr>
+               <td><b>{{ text_bill_id }}</b></td>
+              <td>{{ bill.bill_id }}</td>
+            </tr>
+             <tr>
+               <td><b>{{ text_room_number }}</b></td>
+              <td>{{ bill.room_number }}</td>
+            </tr>
+             <tr>
+               <td><b>{{ text_name }}</b></td>
+              <td>{{ bill.first_name }} {{ bill.last_name }}</td>
+             </tr>
+           <tr>
+               <td><b>{{ column_start_date }}</b></td>
+              <td>{{ bill.start_date }}</td>
+            </tr>
+            <tr>
+               <td><b>{{ column_last_date }}</b></td>
+              <td>{{ bill.last_date }}</td>
+            </tr>
+            <tr>
+               <td><b>{{ column_start_reading }}</b></td>
+               <td>{{ bill.start_reading }}</td>
+            </tr> 
+            <tr>
+               <td><b>{{ column_last_reading }}</b></td>
+               <td>{{ bill.last_reading }}</td>
+            </tr> 
+             <tr>
+               <td><b>{{ column_total_reading }}</b></td>
+               <td>{{ bill.total_reading }}</td>
+            </tr> 
+             <tr>
+               <td><b>{{ column_total_bill }}</b></td>
+               <td>{{ bill.total_bill }}</td>
+            </tr> 
+             <tr>
+               <td><b>{{ column_remark }}</b></td>
+               <td>{{ bill.remark }}</td>
+            </tr> 
+           </table>
+          </div>
+          </div>
+         {% endfor %} 
+         
+       </div>
+    </div>
+</div>
+</br></br>
+</body>
+</html>

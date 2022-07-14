@@ -1,0 +1,220 @@
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="pull-right">
+        <button type="button" data-toggle="tooltip" title="{{ button_filter }}" onclick="$('#filter-product').toggleClass('hidden-sm hidden-xs');" class="btn btn-default hidden-md hidden-lg"><i class="fa fa-filter"></i></button>
+        <a href="{{ add }}" data-toggle="tooltip" title="{{ button_add }}" class="btn btn-primary"><i class="fa fa-plus"></i></a>
+        <button type="submit" form="form-product" formaction="{{ invoice }}" data-toggle="tooltip" title="{{ button_invoice }}" class="btn btn-warning"><i class="fa fa-print"></i></button>
+
+        <button type="button" form="form-product" formaction="{{ delete }}" data-toggle="tooltip" title="{{ button_delete }}" class="btn btn-danger" onclick="confirm('{{ text_confirm }}') ? $('#form-product').submit() : false;"><i class="fa fa-trash-o"></i></button>
+      </div>
+      <h1>{{ heading_title }}</h1>
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+        <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <div class="container-fluid">{% if error_warning %}
+    <div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %}
+    {% if success %}
+    <div class="alert alert-success alert-dismissible"><i class="fa fa-check-circle"></i> {{ success }}
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %}
+    <div class="row">
+      <div id="filter-product" class="col-md-3 col-md-push-9 col-sm-12 hidden-sm hidden-xs">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title"><i class="fa fa-filter"></i> {{ text_filter }}</h3>
+          </div>
+          <div class="panel-body">
+         
+            <div class="form-group">
+              <label class="control-label" for="input-room_number">{{ entry_room_number }}</label>
+              <input type="text" name="filter_room_number" value="{{ filter_room_number }}" placeholder="{{ entry_room_number }}" id="input-room_number" class="form-control" />
+            </div>
+            <div class="form-group">
+              <label class="control-label" for="input-first_name">{{ entry_first_name }}</label>
+              <input type="text" name="filter_first_name" value="{{ filter_first_name }}" placeholder="{{ entry_first_name }}" id="input-first_name" class="form-control" />
+            </div>
+            <div class="form-group">
+              <label class="control-label" for="input-last_name">{{ entry_last_name }}</label>
+              <input type="text" name="filter_last_name" value="{{ filter_last_name }}" placeholder="{{ entry_last_name }}" id="input-last_name" class="form-control" />
+            </div>
+            <div class="form-group">
+              <label class="control-label" for="input-telephone">{{ entry_telephone}}</label>
+              <input type="text" name="filter_telephone" value="{{ filter_telephone }}" placeholder="{{ entry_telephone }}" id="input-telephone" class="form-control" />
+            </div>
+            <div class="form-group">
+              <label class="control-label" for="input-address">{{ entry_address}}</label>
+              <input type="text" name="filter_address" value="{{ filter_address }}" placeholder="{{ entry_address }}" id="input-address" class="form-control" />
+            </div>
+            
+            
+            <div class="form-group text-right">
+              <button type="button" id="button-filter" class="btn btn-default"><i class="fa fa-filter"></i> {{ button_filter }}</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-9 col-md-pull-3 col-sm-12">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title"><i class="fa fa-list"></i> {{ text_list }}</h3>
+          </div>
+          <div class="panel-body">
+            <form action="{{ delete }}" method="post" enctype="multipart/form-data" id="form-product">
+              <div class="table-responsive">
+                <table class="table table-bordered table-hover">
+                  <thead>
+                    <tr>
+                      <td style="width: 1px;" class="text-center"><input type="checkbox" onclick="$('input[name*=\'selected\']').prop('checked', this.checked);" /></td>
+                      <td class="text-left">{% if sort == 'room_number' %} <a href="{{ sort_room_number }}" class="{{ order|lower }}">{{ column_room_number }}</a> {% else %} <a href="{{ sort_room_number }}">{{ column_room_number }}</a> {% endif %}</td>
+                      <td class="text-left">{% if sort == 'first_name' %} <a href="{{ sort_first_name }}" class="{{ order|lower }}">{{ column_first_name }}</a> {% else %} <a href="{{ sort_first_name }}">{{ column_first_name }}</a> {% endif %}</td>
+                      <td class="text-left">{% if sort == 'last_name' %} <a href="{{ sort_last_name }}" class="{{ order|lower }}">{{ column_last_name }}</a> {% else %} <a href="{{ sort_last_name }}">{{ column_last_name }}</a> {% endif %}</td>
+                      <td class="text-left">{% if sort == 'telephone' %} <a href="{{ sort_telephone }}" class="{{ order|lower }}">{{ column_telephone }}</a> {% else %} <a href="{{ sort_telephone }}">{{ column_telephone }}</a> {% endif %}</td>
+                      <td class="text-left">{% if sort == 'address' %} <a href="{{ sort_address }}" class="{{ order|lower }}">{{ column_address }}</a> {% else %} <a href="{{ sort_address }}">{{ column_address }}</a> {% endif %}</td>
+                      <td class="text-left">{{ column_action }}</td>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  
+                  {% if rooms %}
+                  {% for room in rooms %}
+                  <tr>
+                    <td class="text-center">{% if room.room_id in selected %}
+                      <input type="checkbox" name="selected[]" value="{{ room.room_id }}" checked="checked" />
+                      {% else %}
+                      <input type="checkbox" name="selected[]" value="{{ room.room_id }}" />
+                      {% endif %}</td>
+                    
+                    <td class="text-left">{{ room.room_number }}</td>
+                    <td class="text-left">{{ room.first_name }}</td>
+                    <td class="text-left">{{ room.last_name }}</td>
+                    <td class="text-left">{{ room.telephone }}</td>
+                    <td class="text-left">{{ room.address }}</td>
+                  <td class="text-left" >
+
+                  <a href="{{ room.bill }}" data-toggle="tooltip" title="{{ button_viewroom }}" class="btn btn-success"><i class="fa fa-user"></i></a>
+                  <a href="{{ room.editroom }}" data-toggle="tooltip" title="{{ button_edit}}" class="btn btn-primary"><i class="fa fa-pencil"></i></a>
+                  <a href="{{ room.singledelete }}" data-toggle="tooltip" title="{{ button_delete }}" class="btn btn-danger" onclick="confirm('{{text_confirm}}')"><i class="fa fa-trash"></i></a>
+                 
+                  </td>
+                  </tr>
+                  {% endfor %}
+                  {% else %}
+                  <tr>
+                    <td class="text-center" colspan="8">{{ text_no_results }}</td>
+                  </tr>
+                  {% endif %}
+                    </tbody>
+                  
+                </table>
+              </div>
+            </form>
+            <div class="row">
+              <div class="col-sm-6 text-left">{{ pagination }}</div>
+              <div class="col-sm-6 text-right">{{ results }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript"><!--
+$('#button-filter').on('click', function() {
+	var url = '';
+
+	var filter_room_id = $('input[name=\'filter_room_id\']').val();
+
+	if (filter_room_id) {
+		url += '&filter_room_id=' + encodeURIComponent(filter_room_id);
+	}
+
+	var filter_room_number = $('input[name=\'filter_room_number\']').val();
+
+	if (filter_room_number) {
+		url += '&filter_room_number=' + encodeURIComponent(filter_room_number);
+	}
+
+	var filter_first_name = $('input[name=\'filter_first_name\']').val();
+
+	if (filter_first_name) {
+		url += '&filter_first_name=' + encodeURIComponent(filter_first_name);
+	}
+
+	var filter_last_name = $('input[name=\'filter_last_name\']').val();
+
+	if (filter_last_name) {
+		url += '&filter_last_name=' + encodeURIComponent(filter_last_name);
+	}
+
+  var filter_telephone = $('input[name=\'filter_telephone\']').val();
+
+	if (filter_telephone) {
+		url += '&filter_telephone=' + encodeURIComponent(filter_telephone);
+	}
+
+  var filter_address = $('input[name=\'filter_address\']').val();
+
+	if (filter_address) {
+		url += '&filter_address=' + encodeURIComponent(filter_address);
+	}
+
+	location = 'index.php?route=bill/room&user_token={{ user_token }}' + url;
+});
+//--></script> 
+  <script type="text/javascript"><!--
+// IE and Edge fix!
+
+$('button[form=\'form-product\']').on('click', function(e) {
+	$('#form-product').attr('action', $(this).attr('formaction'));
+});
+  
+$('input[name=\'singledelete\']').autocomplete({
+	'source': function(request, response) {
+		$.ajax({
+			url: 'index.php?route=bill/room/singledelete/autocomplete&user_token={{ user_token }}&name=' +  encodeURIComponent(request),
+			dataType: 'json',
+			success: function(json) {
+				response($.map(json, function(item) {
+					return {
+						label: item['name'],
+						value: item['product_id']
+					}
+				}));
+			}
+		});
+	},
+	'select': function(item) {
+		$('input[name=\'filter_name\']').val(item['label']);
+	}
+});
+
+$('input[name=\'filter_model\']').autocomplete({
+	'source': function(request, response) {
+		$.ajax({
+			url: 'index.php?route=catalog/product/autocomplete&user_token={{ user_token }}&filter_model=' +  encodeURIComponent(request),
+			dataType: 'json',
+			success: function(json) {
+				response($.map(json, function(item) {
+					return {
+						label: item['model'],
+						value: item['product_id']
+					}
+				}));
+			}
+		});
+	},
+	'select': function(item) {
+		$('input[name=\'filter_model\']').val(item['label']);
+	}
+});
+//--></script></div>
+{{ footer }} 
